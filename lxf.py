@@ -23,6 +23,10 @@ def findHtmlText(html):
         if li.string != None:
             print(li.string)
 
+def Downloadfild(text,flidPash):
+    pass
+
+
 if __name__ == "__main__":
     ulist = {}
     url = "https://www.liaoxuefeng.com/wiki/896043488029600"
