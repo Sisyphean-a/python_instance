@@ -8,7 +8,7 @@
 
 ### 初始化
 
-- soup = BeautifulSoup(html , "html.parst")
+- soup = BeautifulSoup(html , "html.parser")
 - soup = BeautifulSoup(html , "lxml")
 
 ## 搜索
