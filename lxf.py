@@ -13,8 +13,8 @@ def getHtmlText(url):
 def findHtmlUrl(html,ulist):
     soup = BeautifulSoup(html,"lxml")
     lis = soup.select("a.x-wiki-index-item")
-    for name in lis:
-        ulist[name.string] = "https://www.liaoxuefeng.com"+name["href"]
+    for TypeName in lis:
+        ulist[TypeName.string] = "https://www.liaoxuefeng.com"+TypeName["href"]
 
 
 def findHtmlText(html,text):
@@ -23,25 +23,33 @@ def findHtmlText(html,text):
     for li in lis :
         if li.string != None:
             text.append(li.string)
+        print(type(li))
+        #if li.children.img == "img":
+           # print(1)
 
 def Downloadfild(t,findPash):
     with open(findPash,"a",encoding='utf-8') as f:
-        f.write(text)   
+        f.write(str(t))   
         f.write("\n")
+
+def DownloadImg():
+    pass
 
 
 if __name__ == "__main__":
     ulist = {}
     text = []
-    findPash = "./lxf_text.txt"
+    findPash = "./lxf_text.md"
     url = "https://www.liaoxuefeng.com/wiki/896043488029600"
     html = getHtmlText(url)
     findHtmlUrl(html,ulist)
-    for name,urll in ulist.items():
+    for TypeName,urll in ulist.items():
         htmll = getHtmlText(urll)
+        Downloadfild("## "+TypeName,findPash)
         findHtmlText(htmll,text)
         for t in text:
-            Downloadfild(t,findPash)
+            Downloadfild("- "+t,findPash)
 
 
 
+#![git-tutorial](https://www.liaoxuefeng.com/files/attachments/918921150461184/0)
