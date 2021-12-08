@@ -22,7 +22,7 @@ def findHtmlText(html,text,findPash):
     lis = soup.select("div.x-wiki-content.x-main-content p")
     for li in lis :
         if li.string != None:
-            text.append(li.string)
+            #text.append(li.string)
             Downloadfild(li.string,findPash)
         HtmlImg = li.contents[0]
         if HtmlImg.name == "img" and HtmlImg != None :
