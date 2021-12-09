@@ -17,39 +17,39 @@ def findHtmlUrl(html,ulist):
         ulist[TypeName.string] = "https://www.liaoxuefeng.com"+TypeName["href"]
 
 
-def findHtmlText(html,text,findPash):
+def findHtmlText(html,findPash):
     soup = BeautifulSoup(html,"lxml")
-    lis = soup.select("div.x-wiki-content.x-main-content p")
+    lis = soup.select("div.x-wiki-content.x-main-content")
     for li in lis :
         if li.string != None:
-            #text.append(li.string)
             Downloadfild(li.string,findPash)
-        try:    
+        try:
             HtmlImg = li.contents[0]
         except:
-            print("缺少图片",li)    
-        if HtmlImg.name == "img" and HtmlImg != None :
-            t = "![git-tutorial](https://www.liaoxuefeng.com" + HtmlImg["data-src"] +")"
-            Downloadfild(t,findPash)
+            print("缺少图片",li.contents)    
+        if HtmlImg.name == "img" :
+            DownloadImg(HtmlImg,findPash)
 
 def Downloadfild(t,findPash):
     with open(findPash,"a",encoding='utf-8') as f:
         f.write(str(t))   
         f.write("\n")
 
+def DownloadImg(HtmlImg,findPash):
+    t = "![git-tutorial](https://www.liaoxuefeng.com" + HtmlImg["data-src"] +")"
+    with open(findPash,"a",encoding='utf-8') as f:
+        f.write(str(t))   
+        f.write("\n")
+
 if __name__ == "__main__":
     ulist = {}
-    text = []
-    findPash = "./lxf/lxf_text.md"
+    findPash = "./lxf/new_lxf_text.md"
     url = "https://www.liaoxuefeng.com/wiki/896043488029600"
     html = getHtmlText(url)
     findHtmlUrl(html,ulist)
     for TypeName,urll in ulist.items():
         htmll = getHtmlText(urll)
         Downloadfild("## "+TypeName,findPash)
-        findHtmlText(htmll,text,findPash)
+        findHtmlText(htmll,findPash)
         #for t in text:
           #  Downloadfild(t,findPash)
-
-
-
