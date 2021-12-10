@@ -19,10 +19,13 @@ def findHtmlUrl(html,ulist):
 
 def findHtmlText(html,findPash):
     soup = BeautifulSoup(html,"lxml")
-    lis = soup.select("div.x-wiki-content.x-main-content")
+    lis = soup.select("div.x-wiki-content.x-main-content > p")
+    print(type(lis))
     for li in lis :
-        if li.string != None:
+        if li.contents == None:
             Downloadfild(li.string,findPash)
+        if li.contents != None:
+            processTag(li,findPash)
         try:
             HtmlImg = li.contents[0]
         except:
@@ -30,10 +33,16 @@ def findHtmlText(html,findPash):
         if HtmlImg.name == "img" :
             DownloadImg(HtmlImg,findPash)
 
+def processTag(li,findPash):
+    for li_1 in li.contents:
+        with open(findPash,"a",encoding='utf-8') as f:
+            f.write(str(li_1.string))
+    Downloadfild("",findPash)
+
 def Downloadfild(t,findPash):
     with open(findPash,"a",encoding='utf-8') as f:
         f.write(str(t))   
-        f.write("\n")
+        f.write("\n\n")
 
 def DownloadImg(HtmlImg,findPash):
     t = "![git-tutorial](https://www.liaoxuefeng.com" + HtmlImg["data-src"] +")"
@@ -44,6 +53,8 @@ def DownloadImg(HtmlImg,findPash):
 if __name__ == "__main__":
     ulist = {}
     findPash = "./lxf/new_lxf_text.md"
+    with open(findPash,"w") as f:
+        f.write("")
     url = "https://www.liaoxuefeng.com/wiki/896043488029600"
     html = getHtmlText(url)
     findHtmlUrl(html,ulist)
@@ -51,5 +62,3 @@ if __name__ == "__main__":
         htmll = getHtmlText(urll)
         Downloadfild("## "+TypeName,findPash)
         findHtmlText(htmll,findPash)
-        #for t in text:
-          #  Downloadfild(t,findPash)
