@@ -1,7 +1,6 @@
 ## Git教程
 
 
-
 ![git-tutorial](https://www.liaoxuefeng.com/files/attachments/918921150461184/0)
 史上最浅显易懂的Git教程！
 
@@ -22,7 +21,6 @@
 使用窄屏手机的童鞋，请点击左上角“目录”查看教程：
 
 
-
 ![git-tutorial](https://www.liaoxuefeng.com/files/attachments/1311543585144897/l)
 ## Git简介
 
@@ -37,7 +35,6 @@ Git有什么特点？简单来说就是：高端大气上档次！
 如果你用Microsoft Word写过长篇大论，那你一定有这样的经历：
 
 想删除一个段落，又怕将来想恢复找不回来怎么办？有办法，先把当前文件“另存为……”一个新的Word文件，再接着改，改到一定程度，再“另存为……”一个新文件，这样一直改下去，最后你的Word文档变成了这样：
-
 
 
 ![git-tutorial](https://www.liaoxuefeng.com/files/attachments/918921393733152/0)
@@ -82,7 +79,6 @@ Linus一直痛恨的CVS及SVN都是集中式的版本控制系统，而Git是分
 先说集中式版本控制系统，版本库是集中存放在中央服务器的，而干活的时候，用的都是自己的电脑，所以要先从中央服务器取得最新的版本，然后开始干活，干完活了，再把自己的活推送给中央服务器。中央服务器就好比是一个图书馆，你要改一本书，必须先从图书馆借出来，然后回到家自己改，改完了，再放回图书馆。
 
 
-
 ![git-tutorial](https://www.liaoxuefeng.com/files/attachments/918921540355872/l)
 集中式版本控制系统最大的毛病就是必须联网才能工作，如果在局域网内还好，带宽够大，速度够快，可如果在互联网上，遇到网速慢的话，可能提交一个10M的文件就需要5分钟，这还不得把人给憋死啊。
 
@@ -91,7 +87,6 @@ Linus一直痛恨的CVS及SVN都是集中式的版本控制系统，而Git是分
 和集中式版本控制系统相比，分布式版本控制系统的安全性要高很多，因为每个人电脑里都有完整的版本库，某一个人的电脑坏掉了不要紧，随便从其他人那里复制一个就可以了。而集中式版本控制系统的中央服务器要是出了问题，所有人都没法干活了。
 
 在实际使用分布式版本控制系统的时候，其实很少在两人之间的电脑上推送版本库的修改，因为可能你们俩不在一个局域网内，两台电脑互相访问不了，也可能今天你的同事病了，他的电脑压根没有开机。因此，分布式版本控制系统通常也有一台充当“中央服务器”的电脑，但这个服务器的作用仅仅是用来方便“交换”大家的修改，没有它大家也一样干活，只是交换修改不方便而已。
-
 
 
 ![git-tutorial](https://www.liaoxuefeng.com/files/attachments/918921562236160/l)
@@ -128,14 +123,12 @@ CVS作为最早的开源而且免费的集中式版本控制系统，直到现�
 第二种方法更简单，也是推荐的方法，就是直接从AppStore安装Xcode，Xcode集成了Git，不过默认没有安装，你需要运行Xcode，选择菜单“Xcode”->“Preferences”，在弹出窗口中找到“Downloads”，选择“Command Line Tools”，点“Install”就可以完成安装了。
 
 
-
 ![git-tutorial](https://www.liaoxuefeng.com/files/attachments/919018691743136/0)
 Xcode是Apple官方IDE，功能非常强大，是开发Mac和iOS App的必选装备，而且是免费的！
 
 在Windows上使用Git，可以从Git官网直接下载安装程序，然后按默认选项安装即可。
 
 安装完成后，在开始菜单里找到“Git”->“Git Bash”，蹦出一个类似命令行窗口的东西，就说明Git安装成功！
-
 
 
 ![git-tutorial](https://www.liaoxuefeng.com/files/attachments/919018718363424/0)
@@ -158,7 +151,6 @@ pwd命令用于显示当前目录。在我的Mac上，这个仓库位于/Users/m
 瞬间Git就把仓库建好了，而且告诉你是一个空的仓库（empty Git repository），细心的读者可以发现当前目录下多了一个.git的目录，这个目录是Git来跟踪管理版本库的，没事千万不要手动修改这个目录里面的文件，不然改乱了，就把Git仓库给破坏了。
 
 如果你没有看到.git目录，那是因为这个目录默认是隐藏的，用ls -ah命令就可以看见。
-
 
 
 也不一定必须在空目录下创建Git仓库，选择一个已经有东西的目录也是可以的。不过，不建议你使用自己正在开发的公司项目来学习Git，否则造成的一切后果概不负责。
@@ -190,7 +182,6 @@ pwd命令用于显示当前目录。在我的Mac上，这个仓库位于/Users/m
 嫌麻烦不想输入-m "xxx"行不行？确实有办法可以这么干，但是强烈不建议你这么干，因为输入说明对自己对别人阅读都很重要。实在不想输入说明的童鞋请自行Google，我不告诉你这个参数。
 
 git commit命令执行成功后会告诉你，1 file changed：1个文件被改动（我们新添加的readme.txt文件）；2 insertions：插入了两行内容（readme.txt有两行内容）。
-
 
 
 为什么Git添加文件需要add，commit一共两步呢？因为commit可以一次提交很多文件，所以你可以多次add不同的文件，比如：
@@ -232,6 +223,9 @@ git status告诉我们，将要被提交的修改包括readme.txt，下一步，
 Git告诉我们当前没有需要提交的修改，而且，工作目录是干净（working tree clean）的。
 
 
+要随时掌握工作区的状态，使用git status命令。
+
+如果git status告诉你有文件被修改过，用git diff可以查看修改内容。
 
 ## 版本回退
 
@@ -258,7 +252,6 @@ git log命令显示从最近到最远的提交日志，我们可以看到3次提
 需要友情提示的是，你看到的一大串类似1094adb...的是commit id（版本号），和SVN不一样，Git的commit id不是1，2，3……递增的数字，而是一个SHA1计算出来的一个非常大的数字，用十六进制表示，而且你看到的commit id和我的肯定不一样，以你自己的为准。为什么commit id需要用这么一大串数字表示呢？因为Git是分布式的版本控制系统，后面我们还要研究多人在同一个版本库里工作，如果大家都用1，2，3……作为版本号，那肯定就冲突了。
 
 每提交一个新版本，实际上Git就会把它们自动串成一条时间线。如果使用可视化工具查看Git历史，就可以更清楚地看到提交历史的时间线：
-
 
 
 ![git-tutorial](https://www.liaoxuefeng.com/files/attachments/919019707114272/0)
@@ -299,8 +292,13 @@ Git的版本回退速度非常快，因为Git在内部有个指向当前版本�
 终于舒了口气，从输出可知，append GPL的commit id是1094adb，现在，你又可以乘坐时光机回到未来了。
 
 
-
 现在总结一下：
+
+HEAD指向的版本就是当前版本，因此，Git允许我们在版本的历史之间穿梭，使用命令git reset --hard commit_id。
+
+穿梭前，用git log可以查看提交历史，以便确定要回退到哪个版本。
+
+要重返未来，用git reflog查看命令历史，以便确定要回到未来的哪个版本。
 
 ## 工作区和暂存区
 
@@ -311,12 +309,10 @@ Git和其他版本控制系统如SVN的一个不同之处就是有暂存区的�
 就是你在电脑里能看到的目录，比如我的learngit文件夹就是一个工作区：
 
 
-
 ![git-tutorial](https://www.liaoxuefeng.com/files/attachments/919021113952544/0)
 工作区有一个隐藏目录.git，这个不算工作区，而是Git的版本库。
 
 Git的版本库里存了很多东西，其中最重要的就是称为stage（或者叫index）的暂存区，还有Git为我们自动创建的第一个分支master，以及指向master的一个指针叫HEAD。
-
 
 
 ![git-tutorial](https://www.liaoxuefeng.com/files/attachments/919020037470528/0)
@@ -345,7 +341,6 @@ Git非常清楚地告诉我们，readme.txt被修改了，而LICENSE还从来没
 现在，暂存区的状态就变成这样了：
 
 
-
 ![git-tutorial](https://www.liaoxuefeng.com/files/attachments/919020074026336/0)
 所以，git add命令实际上就是把要提交的所有修改放到暂存区（Stage），然后，执行git commit就可以一次性把暂存区的所有修改提交到分支。
 
@@ -354,9 +349,7 @@ Git非常清楚地告诉我们，readme.txt被修改了，而LICENSE还从来没
 现在版本库变成了这样，暂存区就没有任何内容了：
 
 
-
 ![git-tutorial](https://www.liaoxuefeng.com/files/attachments/919020100829536/0)
-
 
 暂存区是Git非常重要的概念，弄明白了暂存区，就弄明白了Git的很多操作到底干了什么。
 
@@ -389,7 +382,6 @@ Git非常清楚地告诉我们，readme.txt被修改了，而LICENSE还从来没
 提交后，用git diff HEAD -- readme.txt命令可以查看工作区和版本库里面最新版本的区别：
 
 可见，第二次修改确实没有被提交。
-
 
 
 那怎么提交第二次修改呢？你可以继续git add再git commit，也可以别着急提交第一次修改，先git add第二次修改，再git commit，就相当于把两次修改合并后一块提交了：
@@ -425,7 +417,6 @@ Git非常清楚地告诉我们，readme.txt被修改了，而LICENSE还从来没
 git checkout -- file命令中的--很重要，没有--，就变成了“切换到另一个分支”的命令，我们在后面的分支管理中会再次遇到git checkout命令。
 
 
-
 现在假定是凌晨3点，你不但写了一些胡话，还git add到暂存区了：
 
 庆幸的是，在commit之前，你发现了这个问题。用git status查看一下，修改只是添加到了暂存区，还没有提交：
@@ -439,7 +430,6 @@ git reset命令既可以回退版本，也可以把暂存区的修改回退到�
 还记得如何丢弃工作区的修改吗？
 
 整个世界终于清静了！
-
 
 
 现在，假设你不但改错了东西，还从暂存区提交到了版本库，怎么办呢？还记得版本回退一节吗？可以回退到上一个版本。不过，这是有条件的，就是你还没有把自己的本地版本库推送到远程。还记得Git是分布式版本控制系统吗？我们后面会讲到远程版本库，一旦你把stupid boss提交推送到远程版本库，你就真的惨了……
@@ -463,7 +453,6 @@ git reset命令既可以回退版本，也可以把暂存区的修改回退到�
 现在你有两个选择，一是确实要从版本库中删除该文件，那就用命令git rm删掉，并且git commit：
 
 现在，文件就从版本库中被删除了。
-
 
 
 另一种情况是删错了，因为版本库里还有呢，所以可以很轻松地把误删的文件恢复到最新版本：
@@ -495,7 +484,6 @@ Git是分布式版本控制系统，同一个Git仓库，可以分布到不同�
 第1步：创建SSH Key。在用户主目录下，看看有没有.ssh目录，如果有，再看看这个目录下有没有id_rsa和id_rsa.pub这两个文件，如果已经有了，可直接跳到下一步。如果没有，打开Shell（Windows下打开Git Bash），创建SSH Key：
 
 
-
 你需要把邮件地址换成你自己的邮件地址，然后一路回车，使用默认值即可，由于这个Key也不是用于军事目的，所以也无需设置密码。
 
 如果一切顺利的话，可以在用户主目录里找到.ssh目录，里面有id_rsa和id_rsa.pub两个文件，这两个就是SSH Key的秘钥对，id_rsa是私钥，不能泄露出去，id_rsa.pub是公钥，可以放心地告诉任何人。
@@ -505,10 +493,8 @@ Git是分布式版本控制系统，同一个Git仓库，可以分布到不同�
 然后，点“Add SSH Key”，填上任意Title，在Key文本框里粘贴id_rsa.pub文件的内容：
 
 
-
 ![git-tutorial](https://www.liaoxuefeng.com/files/attachments/919021379029408/0)
 点“Add Key”，你就应该看到已经添加的Key：
-
 
 
 ![git-tutorial](https://www.liaoxuefeng.com/files/attachments/919021395420160/0)
@@ -531,10 +517,8 @@ Git是分布式版本控制系统，同一个Git仓库，可以分布到不同�
 首先，登陆GitHub，然后，在右上角找到“Create a new repo”按钮，创建一个新的仓库：
 
 
-
 ![git-tutorial](https://www.liaoxuefeng.com/files/attachments/919021631860000/0)
 在Repository name填入learngit，其他保持默认设置，点击“Create repository”按钮，就成功地创建了一个新的Git仓库：
-
 
 
 ![git-tutorial](https://www.liaoxuefeng.com/files/attachments/919021652277920/0)
@@ -553,9 +537,7 @@ Git是分布式版本控制系统，同一个Git仓库，可以分布到不同�
 由于远程库是空的，我们第一次推送master分支时，加上了-u参数，Git不但会把本地的master分支内容推送的远程新的master分支，还会把本地的master分支和远程的master分支关联起来，在以后的推送或者拉取时就可以简化命令。
 
 
-
 推送成功后，可以立刻在GitHub页面中看到远程库的内容已经和本地一模一样：
-
 
 
 ![git-tutorial](https://www.liaoxuefeng.com/files/attachments/919021675995552/0)
@@ -598,17 +580,14 @@ Git会输出一个警告，告诉你已经把GitHub的Key添加到本机的一�
 首先，登陆GitHub，创建一个新的仓库，名字叫gitskills：
 
 
-
 ![git-tutorial](https://www.liaoxuefeng.com/files/attachments/919021808263616/0)
 我们勾选Initialize this repository with a README，这样GitHub会自动为我们创建一个README.md文件。创建完毕后，可以看到README.md文件：
-
 
 
 ![git-tutorial](https://www.liaoxuefeng.com/files/attachments/919021836828288/0)
 现在，远程库已经准备好了，下一步是用命令git clone克隆一个本地库：
 
 注意把Git库的地址换成你自己的，然后进入gitskills目录看看，已经有README.md文件了：
-
 
 
 如果有多个人协作开发，那么每个人各自从远程克隆一份就可以了。
@@ -628,7 +607,6 @@ Git支持多种协议，包括https，但ssh协议速度最快。
 如果两个平行宇宙互不干扰，那对现在的你也没啥影响。不过，在某个时间点，两个平行宇宙合并了，结果，你既学会了Git又学会了SVN！
 
 
-
 ![git-tutorial](https://www.liaoxuefeng.com/files/attachments/919021987875136/0)
 分支在实际中有什么用呢？假设你准备开发一个新功能，但是需要两周才能完成，第一周你写了50%的代码，如果立刻提交，由于代码还没写完，不完整的代码库会导致别人不能干活了。如果等代码全部写完再一次提交，又存在丢失每天进度的巨大风险。
 
@@ -645,12 +623,10 @@ Git支持多种协议，包括https，但ssh协议速度最快。
 一开始的时候，master分支是一条线，Git用master指向最新的提交，再用HEAD指向master，就能确定当前分支，以及当前分支的提交点：
 
 
-
 ![git-tutorial](https://www.liaoxuefeng.com/files/attachments/919022325462368/0)
 每次提交，master分支都会向前移动一步，这样，随着你不断提交，master分支的线也越来越长。
 
 当我们创建新的分支，例如dev时，Git新建了一个指针叫dev，指向master相同的提交，再把HEAD指向dev，就表示当前分支在dev上：
-
 
 
 ![git-tutorial](https://www.liaoxuefeng.com/files/attachments/919022363210080/l)
@@ -659,17 +635,14 @@ Git支持多种协议，包括https，但ssh协议速度最快。
 不过，从现在开始，对工作区的修改和提交就是针对dev分支了，比如新提交一次后，dev指针往前移动一步，而master指针不变：
 
 
-
 ![git-tutorial](https://www.liaoxuefeng.com/files/attachments/919022387118368/l)
 假如我们在dev上的工作完成了，就可以把dev合并到master上。Git怎么合并呢？最简单的方法，就是直接把master指向dev的当前提交，就完成了合并：
-
 
 
 ![git-tutorial](https://www.liaoxuefeng.com/files/attachments/919022412005504/0)
 所以Git合并分支也很快！就改改指针，工作区内容也不变！
 
 合并完分支后，甚至可以删除dev分支。删除dev分支就是把dev指针给删掉，删掉后，我们就剩下了一条master分支：
-
 
 
 ![git-tutorial](https://www.liaoxuefeng.com/files/attachments/919022479428512/0)
@@ -694,7 +667,6 @@ git branch命令会列出所有分支，当前分支前面会标一个*号。
 切换回master分支后，再查看一个readme.txt文件，刚才添加的内容不见了！因为那个提交是在dev分支上，而master分支此刻的提交点并没有变：
 
 
-
 ![git-tutorial](https://www.liaoxuefeng.com/files/attachments/919022533080576/0)
 现在，我们把dev分支的工作成果合并到master分支上：
 
@@ -709,7 +681,6 @@ git merge命令用于合并指定分支到当前分支。合并后，再查看re
 删除后，查看branch，就只剩下master分支了：
 
 因为创建、合并和删除分支非常快，所以Git鼓励你使用分支完成某个任务，合并后再删掉分支，这和直接在master分支上工作效果是一样的，但过程更安全。
-
 
 
 我们注意到切换分支使用git checkout <branch>，而前面讲过的撤销修改则是git checkout -- <file>，同一个命令，有两种作用，确实有点令人迷惑。
@@ -757,7 +728,6 @@ Git还会自动提示我们当前master分支比远程的master分支要超前1�
 现在，master分支和feature1分支各自都分别有新的提交，变成了这样：
 
 
-
 ![git-tutorial](https://www.liaoxuefeng.com/files/attachments/919023000423040/0)
 这种情况下，Git无法执行“快速合并”，只能试图把各自的修改合并起来，但这种合并就可能会有冲突，我们试试看：
 
@@ -772,14 +742,12 @@ Git用<<<<<<<，=======，>>>>>>>标记出不同分支的内容，我们修改�
 现在，master分支和feature1分支变成了下图所示：
 
 
-
 ![git-tutorial](https://www.liaoxuefeng.com/files/attachments/919023031831104/0)
 用带参数的git log也可以看到分支的合并情况：
 
 最后，删除feature1分支：
 
 工作完成。
-
 
 
 当Git无法自动合并分支时，就必须首先解决冲突。解决冲突后，再提交，合并完成。
@@ -811,9 +779,7 @@ Git用<<<<<<<，=======，>>>>>>>标记出不同分支的内容，我们修改�
 可以看到，不使用Fast forward模式，merge后就像这样：
 
 
-
 ![git-tutorial](https://www.liaoxuefeng.com/files/attachments/919023225142304/0)
-
 
 在实际开发中，我们应该按照几个基本原则进行分支管理：
 
@@ -824,7 +790,6 @@ Git用<<<<<<<，=======，>>>>>>>标记出不同分支的内容，我们修改�
 你和你的小伙伴们每个人都在dev分支上干活，每个人都有自己的分支，时不时地往dev分支上合并就可以了。
 
 所以，团队合作的分支看起来就像这样：
-
 
 
 ![git-tutorial](https://www.liaoxuefeng.com/files/attachments/919023260793600/0)
@@ -863,7 +828,6 @@ Git分支十分强大，在团队开发中应该充分应用。
 再用git stash list查看，就看不到任何stash内容了：
 
 你可以多次stash，恢复的时候，先用git stash list查看，然后恢复指定的stash，用命令：
-
 
 
 在master分支上修复了bug后，我们要想一想，dev分支是早期从master分支分出来的，所以，这个bug其实在当前dev分支上也存在。
@@ -917,7 +881,6 @@ Git自动给dev分支做了一次提交，注意这次提交的commit是1d4b803�
 终于删除成功！
 
 
-
 开发一个新feature，最好新建一个分支；
 
 如果要丢弃一个没有被合并过的分支，可以通过git branch -D <name>强行删除。
@@ -938,8 +901,15 @@ Git自动给dev分支做了一次提交，注意这次提交的commit是1d4b803�
 
 但是，并不是一定要把本地分支往远程推送，那么，哪些分支需要推送，哪些不需要呢？
 
-总之，就是在Git中，分支完全可以在本地自己藏着玩，是否推送，视你的心情而定！
+master分支是主分支，因此要时刻与远程同步；
 
+dev分支是开发分支，团队所有成员都需要在上面工作，所以也需要与远程同步；
+
+bug分支只用于在本地修复bug，就没必要推到远程了，除非老板要看看你每周到底修复了几个bug；
+
+feature分支是否推到远程，取决于你是否和你的小伙伴合作在上面开发。
+
+总之，就是在Git中，分支完全可以在本地自己藏着玩，是否推送，视你的心情而定！
 
 
 多人协作时，大家都会往master和dev分支上推送各自的修改。
@@ -953,7 +923,6 @@ Git自动给dev分支做了一次提交，注意这次提交的commit是1d4b803�
 现在，他就可以在dev上继续修改，然后，时不时地把dev分支push到远程：
 
 
-
 你的小伙伴已经向origin/dev分支推送了他的提交，而碰巧你也对同样的文件作了修改，并试图推送：
 
 推送失败，因为你的小伙伴的最新提交和你试图推送的提交有冲突，解决办法也很简单，Git已经提示我们，先用git pull把最新的提交从origin/dev抓下来，然后，在本地合并，解决冲突，再推送：
@@ -965,12 +934,31 @@ git pull也失败了，原因是没有指定本地dev分支与远程origin/dev�
 这回git pull成功，但是合并有冲突，需要手动解决，解决的方法和分支管理中的解决冲突完全一样。解决后，提交，再push：
 
 
-
 因此，多人协作的工作模式通常是这样：
+
+首先，可以试图用git push origin <branch-name>推送自己的修改；
+
+如果推送失败，则因为远程分支比你的本地更新，需要先用git pull试图合并；
+
+如果合并有冲突，则解决冲突，并在本地提交；
+
+没有冲突或者解决掉冲突后，再用git push origin <branch-name>推送就能成功！
 
 如果git pull提示no tracking information，则说明本地分支和远程分支的链接关系没有创建，用命令git branch --set-upstream-to <branch-name> origin/<branch-name>。
 
 这就是多人协作的工作模式，一旦熟悉了，就非常简单。
+
+查看远程库信息，使用git remote -v；
+
+本地新建的分支如果不推送到远程，对其他人就是不可见的；
+
+从本地推送分支，使用git push origin branch-name，如果推送失败，先用git pull抓取远程的新提交；
+
+在本地创建和远程分支对应的分支，使用git checkout -b branch-name origin/branch-name，本地和远程分支的名称最好一致；
+
+建立本地分支和远程分支的关联，使用git branch --set-upstream branch-name origin/branch-name；
+
+从远程抓取分支，使用git pull，如果有冲突，要先处理冲突。
 
 ## Rebase
 
@@ -983,7 +971,6 @@ git pull也失败了，原因是没有指定本地dev分支与远程origin/dev�
 其实是可以做到的！
 
 Git有一种称为rebase的操作，有人把它翻译成“变基”。
-
 
 
 ![git-tutorial](https://www.liaoxuefeng.com/files/attachments/1216294032394112/l)
@@ -1030,6 +1017,9 @@ Git有一种称为rebase的操作，有人把它翻译成“变基”。
 远程分支的提交历史也是一条直线。
 
 
+rebase操作可以把本地未push的分叉提交历史整理成直线；
+
+rebase的目的是使得我们在查看历史提交的变化时更容易，因为分叉的提交需要三方对比。
 
 ## 标签管理
 
@@ -1076,6 +1066,11 @@ Git有commit，为什么还要引入tag？
 用命令git show <tagname>可以看到说明文字：
 
 
+命令git tag <tagname>用于新建一个标签，默认为HEAD，也可以指定一个commit id；
+
+命令git tag -a <tagname> -m "blablabla..."可以指定标签信息；
+
+命令git tag可以查看所有标签。
 
 ## 操作标签
 
@@ -1094,6 +1089,13 @@ Git有commit，为什么还要引入tag？
 要看看是否真的从远程库删除了标签，可以登陆GitHub查看。
 
 
+命令git push origin <tagname>可以推送一个本地标签；
+
+命令git push origin --tags可以推送全部未推送过的本地标签；
+
+命令git tag -d <tagname>可以删除一个本地标签；
+
+命令git push origin :refs/tags/<tagname>可以删除一个远程标签。
 
 ## 使用GitHub
 
@@ -1115,6 +1117,12 @@ Bootstrap的官方仓库twbs/bootstrap、你在GitHub上克隆的仓库my/bootst
 
 如果你没能力修改bootstrap，但又想要试一把pull request，那就Fork一下我的仓库：https://github.com/michaelliao/learngit，创建一个your-github-id.txt的文本文件，写点自己学习Git的心得，然后推送一个pull request给我，我会视心情而定是否接受。
 
+在GitHub上，可以任意Fork开源仓库；
+
+自己拥有Fork后的仓库的读写权限；
+
+可以推送pull request给官方仓库来贡献代码。
+
 ## 使用Gitee
 
 使用GitHub时，国内的用户经常遇到的问题是访问速度太慢，有时候还会出现无法连接的情况（原因你懂的）。
@@ -1126,17 +1134,14 @@ Bootstrap的官方仓库twbs/bootstrap、你在GitHub上克隆的仓库my/bootst
 使用Gitee和使用GitHub类似，我们在Gitee上注册账号并登录后，需要先上传自己的SSH公钥。选择右上角用户头像 -> 菜单“修改资料”，然后选择“SSH公钥”，填写一个便于识别的标题，然后把用户主目录下的.ssh/id_rsa.pub文件的内容粘贴进去：
 
 
-
 ![git-tutorial](https://www.liaoxuefeng.com/files/attachments/1163452910422880/l)
 点击“确定”即可完成并看到刚才添加的Key：
-
 
 
 ![git-tutorial](https://www.liaoxuefeng.com/files/attachments/1163453163108928/l)
 如果我们已经有了一个本地的git仓库（例如，一个名为learngit的本地库），如何把它关联到Gitee的远程库上呢？
 
 首先，我们在Gitee上创建一个新的项目，选择右上角用户头像 -> 菜单“控制面板”，然后点击“创建项目”：
-
 
 
 ![git-tutorial](https://www.liaoxuefeng.com/files/attachments/1163453517527296/l)
@@ -1196,7 +1201,6 @@ Gitee也同样提供了Pull request功能，可以让其他小伙伴参与到开
 这样，Git会适当地显示不同的颜色，比如git status命令：
 
 
-
 ![git-tutorial](https://www.liaoxuefeng.com/files/attachments/919059629641312/0)
 文件名就会标上颜色。
 
@@ -1240,6 +1244,10 @@ Git会告诉我们，.gitignore的第3行规则忽略了该文件，于是我们
 
 把指定文件排除在.gitignore规则外的写法就是!+文件名，所以，只需把例外文件添加进去即可。
 
+忽略某些文件时，需要编写.gitignore；
+
+.gitignore文件本身要放到版本库里，并且可以对.gitignore做版本管理！
+
 ## 配置别名
 
 有没有经常敲错命令？比如git status？status这个单词真心不好记。
@@ -1269,7 +1277,6 @@ Git会告诉我们，.gitignore的第3行规则忽略了该文件，于是我们
 甚至还有人丧心病狂地把lg配置成了：
 
 来看看git lg的效果：
-
 
 
 ![git-tutorial](https://www.liaoxuefeng.com/files/attachments/919059728302912/0)
@@ -1333,6 +1340,12 @@ Git就会创建一个裸仓库，裸仓库没有工作区，因为服务器上�
 
 这里我们也不介绍Gitolite了，不要把有限的生命浪费到权限斗争中。
 
+搭建Git服务器非常简单，通常10分钟即可完成；
+
+要方便管理公钥，用Gitosis；
+
+要像SVN那样变态地控制权限，用Gitolite。
+
 ## 使用SourceTree
 
 当我们对Git的提交、分支已经非常熟悉，可以熟练使用命令操作Git后，再使用GUI工具，就可以更高效。
@@ -1344,22 +1357,18 @@ Git有很多图形界面工具，这里我们推荐SourceTree，它是由Atlassi
 第一次运行SourceTree时，SourceTree并不知道我们的Git库在哪。如果本地已经有了Git库，直接从资源管理器把文件夹拖拽到SourceTree上，就添加了一个本地Git库：
 
 
-
 ![git-tutorial](https://www.liaoxuefeng.com/files/attachments/1317162822139970/l)
 也可以选择“New”-“Clone from URL”直接从远程克隆到本地。
 
 我们双击learngit这个本地库，SourceTree会打开另一个窗口，展示这个Git库的当前所有分支以及文件状态。选择左侧面板的“WORKSPACE”-“File status”，右侧会列出当前已修改的文件（Unstaged files）：
 
 
-
 ![git-tutorial](https://www.liaoxuefeng.com/files/attachments/1317163279319106/l)
 选中某个文件，该文件就自动添加到“Staged files”，实际上是执行了git add README.md命令：
 
 
-
 ![git-tutorial](https://www.liaoxuefeng.com/files/attachments/1317163629543489/l)
 然后，我们在下方输入Commit描述，点击“Commit”，就完成了一个本地提交：
-
 
 
 ![git-tutorial](https://www.liaoxuefeng.com/files/attachments/1317163717623874/l)
@@ -1370,17 +1379,14 @@ Git有很多图形界面工具，这里我们推荐SourceTree，它是由Atlassi
 在左侧面板的“BRANCHES”下，列出了当前本地库的所有分支。当前分支会加粗并用○标记。要切换分支，我们只需要选择该分支，例如master，然后点击右键，在弹出菜单中选择“Checkout master”，实际上是执行命令git checkout master：
 
 
-
 ![git-tutorial](https://www.liaoxuefeng.com/files/attachments/1317164906709058/l)
 要合并分支，同样选择待合并分支，例如dev，然后点击右键，在弹出菜单中选择“Merge dev into master”，实际上是执行命令git merge dev：
-
 
 
 ![git-tutorial](https://www.liaoxuefeng.com/files/attachments/1317165154172993/l)
 在SourceTree的工具栏上，分别有Pull和Push，分别对应命令git pull和git push，只需注意本地和远程分支的名称要对应起来，使用时十分简单。
 
 注意到使用SourceTree时，我们只是省下了敲命令的麻烦，SourceTree本身还是通过Git命令来执行任何操作。如果操作失败，SourceTree会自动显示执行的Git命令以及错误信息，我们可以通过Git返回的错误信息知道出错的原因：
-
 
 
 ![git-tutorial](https://www.liaoxuefeng.com/files/attachments/1317166563459138/l)

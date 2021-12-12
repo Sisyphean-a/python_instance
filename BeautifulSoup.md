@@ -2,14 +2,20 @@
 
 #### 导入
 
-- import bs4
+```python
+import bs4
 
-- from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup
+```
 
 #### 初始化
 
-- soup = BeautifulSoup(html , "html.parser")
-- soup = BeautifulSoup(html , "lxml")
+```shell
+soup = BeautifulSoup(html , "html.parser")
+soup = BeautifulSoup(html , "lxml")
+```
+
+
 
 ## 搜索
 
@@ -20,31 +26,24 @@
 
 #### 使用select（css选择器）
 
-- 通过标签名查找：
+```python
+# 通过标签名查找：
+soup.select("a")
 
-  soup.select("a")
+# 通过类名查找，class前面需要加一个 . ：
+soup.select(".sister")
 
-- 通过类名查找，class前面需要加一个 . ：
+# 通过id查找，id面前需要加一个 # ：
+soup.select("#link1")
 
-  soup.select(".sister")
+# 通过属性查找，需要使用中括号[]：
+soup.select(' [ href = "http://\****.com" ] ')
 
-- 通过id查找，id面前需要加一个 # ：
-
-  soup.select("#link1")
-
-- 通过属性查找，需要使用中括号[]：
-
-  soup.select(' [ href = "http://\****.com" ] ')
-
-- 组合查找
-
-  - 在tag中进行两个属性的查找
-
-    soup.select("a#link2")
-
-  - 树状查找，获取每一层中下一层的所有信息
-
-    soup.select("div ul a#link2")
+# 组合查找-在tag中进行两个属性的查找
+soup.select("a#link2")
+# 组合查找-树状查找，获取每一层中下一层的所有信息
+soup.select("div ul a#link2")
+```
 
 #### 向下搜索
 
@@ -65,32 +64,33 @@
 
 - 获取值：可以直接对bs4.element.Tag属性的元素进行处理
 
-  - 获取内容，可以直接使用get_text：
+```python
+# 获取内容，可以直接使用get_text：
+soup_list[0].get_text
 
-    soup_list[0].get_text
+# 获取文本：
+  # 使用next_element
+    soup_list[0].next_element
+  # 使用string(常用)
+    soup_list[0].string
 
-  - 获取文本：
+# 获取href，使用["href"]:
+soup_list[0]\["href"]
 
-    - 使用next_element
+# 获取id，使用["id"]:
 
-      soup_list[0].next_element
+# 获取class，使用["class"]:
+```
 
-    - 使用string(常用)
+注意，一般使用迭代的方式输出，例如：
 
-      soup_list[0].string
+```python
+soup_list = soup.select(" div a#link2 ")
+for a soup_list:
+	print(a.string)
+```
 
-  - 获取href，使用["href"]:
 
-    soup_list[0]\["href"]
-
-  - 获取id，使用["id"]:
-
-  - 获取class，使用["class"]:
-
-> 注意，一般使用迭代的方式输出，例如：
-> soup_list = soup.select(" div a#link2 ")
-> for a soup_list:
-> ​	print(a.string)
 
 ## 对象
 
@@ -128,7 +128,18 @@
 
 
 
+```html
+<body>
+<p class="title"><b>The Dormouse's story</b></p>
 
+<p class="story">Once upon a time there were three little sisters; and their names were
+<a href="http://example.com/elsie" class="sister" id="link1">Elsie</a>,
+<a href="http://example.com/lacie" class="sister" id="link2">Lacie</a> and
+<a href="http://example.com/tillie" class="sister" id="link3">Tillie</a>;
+and they lived at the bottom of a well.</p>
+
+<p class="story">...</p>
+```
 
 
 
