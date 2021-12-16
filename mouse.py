@@ -10,24 +10,21 @@ def init():
 
 # 获取位置基本模块
 def get_position(m):
-    for i in reversed(range(1,6)):
-        print("i"+"秒钟后获取位置")
+    for i in reversed(range(1,3)):
+        print(str(i)+"秒钟后获取位置")
         time.sleep(1)
     print("目前位置为："+str(m.position()))
-    enter = input("是否继续获取位置（Y/N）:")
+    return m.position()
 
 # 自动获取位置，依赖于get_position()
 def auto_confirm_size(m):
-    enter = input("是否获取位置（Y/N）:")
-    if enter == "Y":
-        position = get_position(m)
-    else:
-        print("位置获取结束！")
+    position = get_position(m)
     return position
 
 # 手动获取位置，依赖于auto_confirm_size()
 def confirm_size(m):
-    enter = input("是否手动输入位置（Y/N）：")
+    #enter = input("是否手动输入位置（Y/N）：")
+    enter = "N"
     if enter == "Y":
         position = input("请输入位置，模式为（x,y）：")
     else:
@@ -36,36 +33,29 @@ def confirm_size(m):
 
 # 对位置随机化，避免封号
 def random_position(position):
-    position.x = uniform(position.x-5,position.x+5)
-    position.y = uniform(position.y-5,position.y+5)
+    new_position = ()
+    x = uniform(position[0]-5,position[0]+5)
+    y = uniform(position[1]-5,position[1]+5)
+    new_position = x + y
+    return position
 
 # 对时间随机化，避免封号
 def random_time():
     t = 0.2
     time = uniform(t-0.1,t+0.2)
-    return time
+    return round(time,2)
 
 # 鼠标模拟点击
-def mouse(m,random_time,random_position):
-    #m.move(random_position)
-    m.click(random_position,button=1)
-    time.sleep(random_time)
+def mouse(m,timee,position):
+    print("开始模拟点击")
+    m.click(position[0],position[1],button=1)
+    time.sleep(timee)
 
 if __name__ == "__main__":
     m = init()
     position = confirm_size(m)
-    for i in range(60):
-        random_position = random_position(position)
-        random_time = random_time()
-        mouse(m,random_time,random_position)
-        print("第"+str(i)+"点击，"+"点击位置"+str(m.position))
-
-"""
-
-思路：
-    获取位置
-    一定范围的随机时间，
-    一定范围的随机位置，
-    重复进行点击
-
-"""
+    for i in range(61):
+        position = random_position(position)
+        timee = random_time()
+        mouse(m,timee,position)
+        print("第"+str(i)+"点击，"+"点击位置"+str(m.position()))
