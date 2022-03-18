@@ -122,12 +122,6 @@ for a soup_list:
 
 
 
-
-
-
-
-
-
 ```html
 <body>
 <p class="title"><b>The Dormouse's story</b></p>
