@@ -1,5 +1,7 @@
-import random
+import pandas as pd 
 
-for i in range(1,10):
-    a = random.uniform(10,20)
-    print("nihk"+i)
+url = "https://info.usd-cny.com/wti/lishi.htm"
+
+table = pd.read_html(url)
+
+print(table)

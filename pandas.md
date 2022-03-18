@@ -16,7 +16,7 @@ df = pd.DataFrame({"id":[1,2,3] , 			# 第一列数据
 
 # set_index()：设置索引；如果不自己设置索引的话，pandas会在开头一列加个索引
 df = df.set_index("id",
-                  inplace=False)	# 如果inplace=True，索引会还原我
+                  inplace=False)	# 如果inplace=True，索引会还原为列
 ```
 
 ### excel的导入与导出
@@ -96,8 +96,10 @@ df = pd.DateFrame([s1,s2,s3])
 # 序列添加到数据帧中可以变成行或者列，数据帧中的行或者列提取出来也是序列
 print(type(df["A"]))		# 输出显示类型为为Series
 
-# at()：Series的一个函数，用于访问具体的某个值，同样可以修改此值
-df["A"].at(0) = 100
+# at()：用于访问Series的某个值，同样可以修改此值
+df["A"].at[0] = 100
+# at():如果用于DataFrame也可以，需要使用两个数值：index,data
+df.at[0,"A"] = 100
 
 # 填充：通过循环和at()可以设置一个Series的所有值，循环个数就是index
 for i in df.index:
@@ -133,5 +135,24 @@ for i in df.index:
     df["B"].at[i] = start + timedelta(days=1)	# 填充日份
     df["B"].at[i] = date(start.year+1,start.month,start.day)	# 填充年份
     df["B"].at[i] = add_month(start,i)		# 填充月份
+```
+
+### 函数填充，计算列
+
+```python
+books = pd.read_excel("./*.xlsx",index_col="ID")
+
+# 进行列运算，直接对序列进行操作即可
+books["c"] = books["a"] * books["b"]
+
+# 如果不是两个列，是一个列和一个值同样可以
+books["c"] = books["a"] + 2
+
+# 或者通过apply函数进行简化计算
+books["c"] = books["a"].apply(lambdy x:x+2)
+
+# 如果需要对部分序列进行计算，可以使用值计算：
+for i in range[5,16]:
+    books["c"].at[i] = books["a"].at[i] *books["b"].at[i]
 ```
 

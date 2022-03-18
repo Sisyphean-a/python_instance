@@ -1,0 +1,958 @@
+requests.requset() 构造一个请求，支撑以下各方法的基础方法
+requests.get()  获取HTML网页的主要方法，对应于HTTP的get
+requests.head() 获取HTML网页头信息的方法，对应于HTTP的head
+requests.post()  向HTML网页提交POST请求的方法，对应于HTTP的POST
+				post:请求向url位置的资源后附加新的数据。即：部分替换
+requests.put()  向HTML网页提交pot请求的方法，对应于HTTP的pot
+				put:请求向url的位置存储一个资源，覆盖原url位置的资源。即：全部替换
+requests.patch() 向HTML网页提交局部修改请求，对应于HTTP的patch
+requests.deleta() 向HTML页面提交删除请求，对应于HTTP的deleta
+
+
+r=requests.get(url， params=None，**kwarge)
+Response对象的五个属性：
+r.status_code                #返回状态码，如果是200，则访问成功，404表示失败
+r.text                          HTTP响应内容的字符串形式，即，url对应的页面内容
+r.encoding                   从HTTP header中猜测的响应内容编码方式。如果 header中不存在 charset，则认为编码为ISO-8859-1
+r.apparent_encoding   从内容中分析出的响应内容编码方式（备用编码方式）
+r.content                      HTTP响应内容的二进制形式
+
+
+requests流程：
+步骤1.由r.status_code先判断状态码，如果是200，进行步骤2，如果不是200，进行步骤3
+步骤2.如果响应码是200，则可以使用r.text  r.encoding  r.apparent_encoding  r.content
+步骤3.如果响应码是400或其他原因出错，将产生异常
+
+
+理解requests库的异常： 
+requests.ConnectionError    网络连接异常，如DNS查询失败，拒绝连接等
+requests.HTTPError          http错误异常
+requests.URLRequired        url缺失异常
+requests.TooManyRedirects   超过最大重定向次数，产生重定向异常
+requests.ConnectTimeout     连接远程服务器超时异常
+requests.Timeout            请求url超时，产生超时异常
+
+r.raise_for_status()                如果响应码不是200，产生异常requests.HTTPError
+
+
+
+爬取网页的通用框架:
+import requests
+def getHTMLText(url):
+	try:
+			r=requests.get(url，timeout=30)         #我使用的是get，故申请的内容为全部内容
+			r.raise_for_status()
+			r.encoding=r.apparent_encoding
+			return r.text			#我使用的是text，故展示的是全部内容。
+	except:			#如果我使用的是head,则会仅仅展示头文件，但是调用的资源依旧是全部内容
+			return "产生异常“
+if  __name__=="__main__"
+			url="http://www.baidu.com"
+			print(getHTTPText(url))
+
+
+关于requests的七种方法
+1.requests.request(method,url,**kwargs)
+		method:就是get,head,post,put等参数
+		kwargs:控制访问的参数，均为可选项:
+		params:字典或字节序列，作为参数增加到url中
+		*data:字典，字节序列或文件对象，作为request的内容
+		*json:json格式的数据，作为request的内容
+		*headers:字典，HTTP定制头
+		cookies:字典或cookiejar，request中的cookie
+		auth：元组，支持HTTP认证功能
+		files:字典类型，传输文件
+		timeout：设定超时时间，秒为单位
+		proxies:字典类型，设定访问代理服务器，可以增加登录认证
+		
+2.requests.get(url,params=none,**kwargs)  #重要
+
+3.requests.head(url,**kwargs)	#重要
+		
+4.requests.post(url,data=None,json=None,**kwargs)
+
+5.requests.put(url,data=None,**kwargs)
+
+6.requests.patch(url,data=None,**kwargs)
+
+7.requests.delete(url,**kwargs)
+
+
+爬虫的尺度
+1.小规模  使用requests库   占比90%
+2.中规模  使用scrapy库
+3.大规模  定制开发
+
+
+网络爬虫的限制：
+1.来源审查：使用user-agent进行限制
+	检查来访HTTP协议头的user-agent域，只响应浏览器或友好爬虫的访问
+2.发布公告：robots协议
+	告知爬虫此网站规则
+	
+
+如何应对对于来源审查：
+	修改头文件，即headers方法。定义一个user-agent，然后赋予url
+	kv={'user-agent':'Mozilla/5.0'}
+	url=""
+	r=requests.get(url,headers=kv)
+
+全代码：
+import requests
+def getHTTP(url)
+	try:
+		kv={'user-agent':'Mozilla/5.0'}
+		r=requests.get(url,headers=kv)
+		r.raise_for_status()
+		r.encoding=r.apparent_encoding
+		return r.text
+	except:
+		return "出现错误！"
+		
+if  __name__="__main__"
+	url="www.baidu.com"
+	print(getHTTP(url))
+
+
+
+网络图片的爬取
+网络上图片的格式为网址+图片格式，例如：http://*****.com/*****.jpg
+
+全代码：
+import requests
+import os
+
+url="http://******.jpg"
+root="D://pics//"
+path=root+url.split('/')[-1]
+
+try:
+	if not os.path.exists(root):   
+		os.mkdir(root)
+	if not os.path.exists(path):
+		r=requests.get(url)
+		with open(path,'wb') as f:
+			f.write(r.content)
+			f.close()
+			print("文件保存成功")
+	else:
+		print("文件已存在")
+except:
+	print("爬取失败")
+
+
+
+#os.path.exists(path),判断路径是否存在
+如果路径存在，则返回一个True,如果不存在，就返回一个false
+#os.mkdir(path),创建一个路径
+#if not语句 如果否或者空，则执行内部语句
+
+
+
+Beautiful Soup库
+Beautuful Soup是解析，遍历，维护“标签树”的功能库
+调用beautifulsoup库：from bs4 import BeautifulSoup
+调用的是bs4库里面的beautifulsoup
+煲汤：soup=BeautifulSoup(r.text,"html.parser")
+注意的是，这个煲汤需要一个解释器，类似于需要一种“火”，我们这里用的火就是html.parser
+没有火就没有办法煲汤，然后我们煲汤的主料是一个HTML文档，即我们爬取到的r.text
+
+
+Beautiful Soup库解析器
+	1.bs4的HTML解析器：需安装bs4库，BeautifulSoup(mk,'html.parser') *主要解析器
+	2.lxml的HTML解析器：需安装lxml库，BeautifulSoup(mk,'lxml')
+	3.lxml的xml解析器：同上，BeautifulSoup(mk,'xml')
+	4.html5lib的解析器：需安装html5lib库，BeautufulSoup(mk,'html5lib')
+
+
+Beautuful Soup类的基本元素
+注意，这些都是煲好汤之后对汤的操作，也许可以说是汤的调料
+	1.Tag:标签，最基本的信息组织单元，分别用<>和</>标明开头和结尾
+			使用方式：直接用煲好的汤加上.标签即可，例：soup.a
+	2.Name:标签的名字，<p>...</p>的名字是‘p’，格式：<tag>.name  
+			即：soup.a.name,也可以查看a标签的父标签的名字：soup.a.parent.name
+	3.Attributes:标签的属性，字典形式组织，格式：<tag>.attrs
+			即：soup.a.attrs,输出的是键值对字典模式，所以可以使用字典的方式进行提取
+			例如：soup.a.attrs['class']
+	4.NavigableString:标签内非属性字符串，<>...</>中字符串，格式：<tag>.string
+			即：soup.a.string
+	5.Comment:标签内字符串的注释部分，一种特殊的Comment类型,方式同上
+
+
+基于bs4库的HTML遍历方法
+方法1：下行遍历
+	1: .contents:子节点的列表，将<tag>所有的儿子节点存入列表
+		返回的是列表，可以用列表的方式进行检索.
+		例:len(soup.body.contents),然后：soup.body.contents[1]
+	2: .children:子节点的迭代类型，与.contents类似，用于循环遍历儿子节点
+		遍历：for child in soup.body.children:
+				print(child)
+	3: .descendants:子孙节点的迭代类型，包含所有子孙节点，用于遍历循环
+		遍历:同上
+	注意：contents返回的是列表，而后面两个返回的是迭代类型，只能用于遍历
+方法2：上行遍历
+	1: .parent:节点的父亲标签
+	2: .parents:节点的先辈标签的迭代类型，用于循环遍历先辈节点
+方法3：平行遍历
+	注意：所有的平行遍历发生在同一个父节点下
+	1: .next_sibling:返回按照HTML文本顺序的下一个平行节点标签
+	2: .previous_sibling:返回按照HTML文本顺序的下一个平行节点标签
+	3: .next_siblings:迭代类型，返回按照HTML文本顺序的后续所有平行节点标签
+		遍历:for sibling in soup.a.next_siblings:
+				print(sibling)
+	4: .previous_siblings:迭代类型，返回按照HTML文本顺序的前续所有平行节点标签
+		遍历:同上
+	
+	
+bs4库的prettify()方法
+prettify方法能为HTML文本增加换行符，通过print(soup.prettify())输出的文本很美观
+同时，prettify方法也能为单个标签进行美化，例如：print(soup.a.prettify())
+注意：bs4库把所有读入的HTML文件和字符串的编码格式都转换为了utf-8的格式
+
+
+
+信息标记的三种形式
+
+信息标记的作用：
+	1.标记后的信息可形成信息组织结构，增加了信息维度
+	2.标记后的信息可用于通信，存储或展示
+	3.标记的结构与信息一样具有重要价值
+	4.标记后的信息更利于程序理解和运用
+	
+1.XML:类似于HTML格式，可以说是HTML的一种扩展
+		如果标签内有信息，那么就用一对标签表示：<name>...</name>
+		如果标签内没有信息，那么就用一个标签直接表示：<name/>
+		关于注释，类似于HTML，即：<!--   -->
+		扩展性好，但繁琐，多用于Internet的信息交互与传递
+		
+2.JSON:javascript语言中面向对象的一种表达形式，有类型的键值对的表达形式
+		例如：“name”：“北京理工大学”
+		注意，JSON中所有的字符串都要带上双引号，如果值是数字，不用加双引号
+		当一个值中含有多个信息时，采用方括号加逗号的形式：“name”：[“北大”,"清华"]
+		键值对嵌套时用{，}的形式："name":{"newname":"北京理工大学"
+									  "oldname":"延安自然科学院"}
+		适合程序处理，较xml简洁，多用于移动应用云端和节点的信息通信，没有注释
+		
+3.YAML:无类型的键值对，即不用加双引号。类似于python    *很实用
+		所诉关系通过缩进的形式进行表达，用减号-表示并列关系
+		例：name:
+				-北京理工大学
+				-延安自然科学院
+		用|表示大段文字，用#表示注释
+		文本信息比例最高，可读性好，各类系统的配置文件，有注释，易读
+		
+		
+信息提取的一般方法
+方法1：完整解析信息的标记形式，再提取关键信息。
+		xml,json,yaml
+		需要标记解析器，例如：bs4库的标签树遍历
+		优点：信息解析准确
+		缺点：提取过程繁琐，速度慢
+方法2：无视标记形式，直接搜索关键信息。
+		搜索  对信息的文本查找函数即可
+		优点：提取过程简洁，速度较快。
+		缺点：提取结果准确性与信息内容相关
+融合方法：结合形式解析与搜索方法，提取关键信息。
+		xml,json,yaml 搜索
+		需要标记解析器及文本查找函数
+		
+		
+基于bs4库的查找方法
+find_all(name,attrs,recursive,string,**kwargs)
+返回一个列表类型，存储查找的结果，如果name是True，则返回所有标签
+name:对标签名称的检索字符串
+	例如:find_all("a"),可以检索所有的a标签，并返回一个列表
+		find_all(["a","b"]),可以检索所有的a和b标签，并返回一个列表
+		find_all(True),返回所有标签，可以通过fand_all(True).name查看
+attrs:对标签属性值的检索字符串，可标注属性检索
+	例如：soup.find_all('p',"course")
+		 soup.find_all(id="link")
+recursive:是否对子孙全部检索，默认True
+string:<>...</>中字符串区域的检索字符串
+
+因为find_all非常常用所以bs4库中提供了find_all的简写形式：
+<tag>(...)等价于<>.find_all(...)
+soup(...)等价于soup.find_all(...)
+
+
+find_all的扩展方法,同.find_all()参数：
+	<>.find():搜索结果只返回一个结果，字符串类型
+	<>.find_parents():在先辈节点中搜索，返回列表类型
+	<>.find_parent():在先辈节点中返回一个结果，字符串类型
+	<>.find_next_siblings():在后续平行节点中搜索，返回列表类型
+	<>.find_next_sibling():在后续平行节点中返回一个结果，字符串类型
+	<>.find_previous_siblings():在前序平行节点中搜索，返回列表类型
+	<>.find_precious_sibling():在前序平行节点中返回一个结果，字符串类型
+
+
+爬取中国大学排行榜
+import requests
+from bs4 import BeautifulSoup
+import bs4
+
+def getHTMLText(url):
+	try:
+		r=requests.get(url,timeout=30)
+		r.raise_for_status()
+		r.encoding=r.apparent_encoding
+		a=r.text
+		return a
+	except:
+		return "shibai"
+
+def findHTMLText(ulist,html):
+	soup=BeautifulSoup(html,"html.parser")
+	for chil in soup.find('tbody').children: #把tbody的后代标签填到chil中
+		if isinstance(chil,bs4.element.Tag): #判断是否格式相同，如果是则输出
+			tds=chil('td')			#输出chil中的td标签
+			tda=chil('a')			#输出chil中的a标签
+		ulist.append([tds[0].string,tda[0].string,tds[4].string])
+		#把标签内容作为列表添加到ulist中
+
+
+def printText(ulist,num):
+	print("{:^10}{:^10}{:^10}".format("排名","学校","评分")) #格式化输出
+	for i in range(num):
+		u=ulist[i]
+		print("{:^10}{:^10}{:^10}".format(u[0],u[1],u[2]))
+
+if __name__ == '__main__':
+	ulist = []
+	url='https://www.shanghairanking.cn/rankings/bcur/2020'
+	html=getHTMLText(url)
+	findHTMLText(ulist,html)
+	printText(ulist,20)
+
+中文对齐问题的解决：
+采用中文字符的空格填充char(12288)
+
+
+
+
+正则表达式库
+正则表达式是用来简洁表达一组字符串的表达式
+
+正则表达式的使用：
+编译：将符合正则表达式语法的字符串转换成正则表达式特征
+
+正则表达式的语法：
+	.  :表示任何单个字符
+	[] :字符集，对单个字符给出取值范围
+	[^]:非字符集，对单个字符给出的排除范围
+	*  :前一个字符0次或无限次扩展
+	+  :前一个字符1次或无限次扩展
+	?  :前一个字符0次或1次扩展
+	|  :左右表达式任意一个
+	{m}:扩展前一个字符m次
+	{m,n}:扩展前一个字符m至n次（含n）
+	^  :匹配字符串开头
+	$  :匹配字符串结尾
+	() :分组标记，内部只能使用|操作符
+	\d :数字，等价于[0-9]
+	\w :单词字符，等价于[A-Za-z0-9]
+
+经典正则表达式实例
+	^[A-Za-z]+$         	由26个字母组成的字符串
+	^[A-Za-z0-9]+$      	由26个字母和数字组成的字符串
+	^-?\d+$             	整数形式的字符串
+	^[0-9]*[1-9][0-9]*$ 	正整数形式的字符串
+	[1-9]\d{5}              中国境内邮政编码，6位
+	[\u4e00-\u9fa5]         匹配中文字符
+	\d{3}-\d{8}|\d{4}-\d{7} 国内电话号码，010-68913536
+
+匹配IP地址的正则表达式
+IP地址字符串形式的正则表达式（IP地址分4段，每段0-255）
+方法1：\d+.\d+.\d+.\d+
+方法2：\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}
+精准写法：
+0-99:[1-9]?\d
+100-199:1\d{2}
+200-249:2[0-4]\d
+250-255:25[0-5]
+故：(([1-9]?\d|1\d{2}|2[0-4]\d|25[0-5]).){3}([1-9]?\d|1\d{2}|2[0-4]\d|25[0-5])
+
+
+
+Re库：
+re库是python的标准库，主要用于字符串匹配
+1.re库采用raw string类型表示正则表达式，表示为：r'text'
+	r表示re库，text表示正则表达式的内容
+	例如：中国境内邮政编码：r'[1-9]\d{5}'
+	raw string是不包含转义符的字符串
+2.或者使用string类型，但是更繁琐，不建议使用
+
+
+re库主要功能函数：
+re.search():在一个字符串中搜索匹配正则表达式的第一个位置，返回match对象
+re.match():从一个字符串的开始位置起匹配正则表达式，返回match对象
+re.findall():搜索字符串，以列表类型返回全部能匹配的子串
+re.split():将一个字符串按照正则表达式匹配结果进行分割，返回列表类型
+re.finditer():搜索字符串，返回一个匹配结果的迭代类型，每个迭代元素是match对象
+re.sub():在一个字符串中替换所有匹配正则表达式的子串，返回替换后的字符串
+
+参数解释：
+1.re.search(pattern,string,flags=0)
+	在一个字符串中搜索匹配正则表达式的第一个位置，返回match对象
+	pattern:正则表达式的字符串或原生字符串表示
+	string:待匹配字符串
+	flags:正则表达式使用时的控制标记
+		re.I 忽略正则表达式的大小写
+		re.M 正则表达式中的^操作符能够将给定字符串的每行当作匹配开始
+		re.S 正则表达式的.操作符能够匹配所有字符，默认匹配除换行外的所有字符
+2.re.match(pattern,string,flags=0)
+	参数同上
+3.re.findall(pattern,string,flags=0)
+	参数同上
+4.re.split(pattern,string,maxsplit=0,flags=0)
+	maxsplit:最大分割数，剩余部分作为最后一个元素输出
+5.re.finditer(pattern,string,flags=0)
+	参数同上
+6.re.sub(pattern,repl,string,count=0,flags=0)
+	repl:替换匹配字符串的字符串
+	flags:匹配的最大替换次数
+	
+	
+例1：
+import re
+match=re.match(r'[1-9]\d{5},'BIT 10081')
+if match:
+	match.group(0)
+结果：空
+#注意，如果直接使用group函数的话，如果返回值为空，会报错。所以我们需要使用if语句
+
+例2：
+import re
+re.split(r'[1-9]\d{5}','BIT100081 TSU100084')
+结果：['BIT',' TSU','']
+re.split(r'[1-9]\d{5}','BIT100081 TSU100084',maxsplit=1)
+结果：['BIT',' TSU10084']
+
+re库的另一种等价用法：
+面向对象用法：编译后的多次操作
+	regex=re.compile(pattern,flags=0)
+将正则表达式的字符串形式编译成正则表达式对象
+然后就可以使用regex.search等方法
+例如：
+	pat=re.compile(r'[1-9]\d{5}')
+	rst=pat.search('BIT 100081')
+这种方法只需要在后面给出需要匹配的对象就行了
+
+
+
+
+re库的match对象
+
+match对象的属性：
+.string :待匹配的文本
+.re     :匹配时使用的pattern对象
+.pos    :正则表达式搜索文本的开始位置
+.endpos :正则表达式搜索文本的结束位置
+
+match对象的方法：
+.group(0) :获得匹配后的字符串
+.start()  :匹配字符串在原始字符串的开始位置
+.end()    :匹配字符串在原始字符串的结束位置
+.span()   :返回（.start(),.end()）
+
+
+re库的贪婪匹配和最小匹配
+re库默认采用贪婪匹配，即输出匹配最长的子串
+例：
+	match=re.search(r'PY.*N','PYANBNCNDN')
+	match.group(0)
+	输出：PYANBNCNDN
+最小匹配：只需要在.*后面加上一个？就可以了
+	match=re.search(r'PY.*?N','PYANBNCNDN')
+	match.group(0)
+	输出：PYAN
+	
+最小匹配操作符
+*？：前一个字符0次或无限次扩展，最小匹配
++？：前一个字符1次或无限次扩展，最小匹配
+??：前一个字符0次或1次扩展，最小匹配
+{m,n}?:扩展前一个字符m至n次（含n），最小匹配
+
+
+
+“淘宝商品比价定向爬虫”实例介绍
+
+目标：获取淘宝搜索页面的信息，提取其中的商品名称和价格
+理解：淘宝的搜索接口
+	 翻页的处理
+技术路线：requests-re
+
+程序的结构设计
+步骤一：提交商品搜索请求，循环获取页面
+步骤二：对一个每个页面，提取商品名称和价格信息
+步骤三：将信息输出到屏幕上
+
+编程实例1：
+import requests
+import re
+
+def getHTMLText(url):
+	try:
+		header={
+		 'user-agent': '*',
+		 'referer': 'https://www.taobao.com/',
+		  'cookie': '* '
+		}
+		r=requests.get(url,headers=header,timeout=30)
+		r.raise_for_status()
+		r.encoding=r.apparent_encoding
+		return r.text
+	except:
+		print("读取失败")
+
+		
+def parsePage(ilt,html):
+	try:
+		plist=re.findall(r'\"view_price\"\:\"[\d\.]*\"',html)
+		tlist=re.findall(r'\"raw_title\"\:\".*?\"',html)
+		for i in range(len(plist)):
+			price=eval(plist[i].split(':')[1])
+			#eval() 函数用来执行一个字符串表达式，并返回表达式的值（去除引号）
+			title=eval(tlist[i].split(':')[1])
+			ilt.append([price,title])
+		#print(ilt)
+	except:
+		print("提取失败")
+	
+def printGoodList(ilt):
+	tplt="{:4}\t{:8}\t{:16}"
+	print(tplt.format("序号","价格","商品名称"))	#格式化输出，format函数
+	count=0
+	for g in ilt:
+		count=count+1
+		print(tplt.format(count,g[0],g[1]))
+	
+if __name__ == '__main__':
+	goods="书包"
+	depth=2
+	start_url='https://s.taobao.com/search?q='
+	infoList=[]
+	for i in range(depth):
+		try:
+			url=start_url+goods+"&s="+str(44*i)	#总结每个页面的规律
+			html=getHTMLText(url)
+			parsePage(infoList,html)
+		except:
+			continue	#我们要确定即使中间遇见了什么问题，也要保证程序能继续运行
+	printGoodList(infoList)
+
+
+
+实例2，爬取糗事百科：
+import requests
+from bs4 import BeautifulSoup
+
+
+def getHTTPText(url,header,proxy):
+    try:
+        r=requests.get(url,headers=header,timeout=5,proxies=proxy)
+        r.raise_for_status()
+        return r.text
+    except :
+        print("爬取失败")
+
+
+def bs_text(listt,html):
+    soup=BeautifulSoup(html,"html.parser")
+    listt=soup.find_all("div",class_="article")
+
+    for x in range(len(listt)):
+        name=listt[x].find("h2").string
+        age=listt[x].find("div",class_="articleGender").string
+        text=listt[x].find("div",class_="content").find("span").get_text()
+        funny=listt[x].find("span","stats-vote").find("i").string
+        txt=("昵称:{:8}年龄:{:4}\t点赞:{:5}\n{:}".format(name,age,funny,text))
+
+        save_text("xiushi.txt",txt)
+
+
+def save_text(path,*args):
+    lun="---------------------------------------"
+    for i in args:
+        with open(path,"a",encoding="UTF-8") as f:
+            f.write(lun+"\n")
+            f.write(i)
+
+
+if __name__ == '__main__':
+    listt=[]
+    for i in range(10):
+        url="https://www.qiushibaike.com/text/page/{}".format(i)
+        proxy={"IP":"117.64.224.33"}
+        header={"User-Agent" : "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.183 Safari/537.36"}
+        html=getHTTPText(url,header,proxy)
+        bs_text(listt,html)
+
+
+
+在这里我们用到了一种工具：curl
+curl 是常用的命令行工具，用来请求 Web 服务器。它的名字就是客户端（client）的 URL 工具的意思。
+它的功能非常强大，命令行参数多达几十种。如果熟练的话，完全可以取代 Postman 这一类的图形界面工具。
+谷歌浏览器中有一个很强大的功能，可以把任意的HTTP操作复制为curl请求
+对于python来说，我们可以使用copy as curl(bash)请求
+这个请求很强大，他的里面包含了很多的头文件，包括cookie，user-agent,referer
+我们可以使用专门的网站把这个请求解析出来，直接提取出我们需要的头信息
+在这里给出网站的地址：https://curl.trillworks.com/
+
+
+
+股票数据定向爬虫：
+
+目标描述：
+目标：获取上交所和深交所所有股票的名称和交易信息
+输出：保存到文件中
+技术路线：requests-bs4-re
+
+数据网站的选择：
+选取原则：股票信息静态存在于HTML页面中，非JS代码生成，没有robots协议限制
+选取方法：浏览器F12，源代码查看等
+选取心态：不要纠结于某个网站，多找信息源尝试
+
+程序的结构设计：
+步骤一：从东方财富网获取股票信息
+步骤二：根据股票列表逐个到百度股票获取个股信息
+步骤三：将结果存储到文件
+
+
+
+股票数据定向爬虫实例编写
+import requests
+from bs4 import BeautifulSoup
+import　traceback
+import re
+
+def getHTMLText(url,code="utf-8"):
+	try:
+		r=requests.get(url,timeout=30)
+		r.raise_for_status()
+		r.encoding=code
+		return r.text
+	except :
+		print("爬取失败")
+
+def getStockList(lst,stockURL):
+	html=getHTMLText(stockURL,"GB2312")
+	soup=BeautifulSoup(html,"html.parser")
+	a=soup.find_all("a")
+	for i in a:
+		try:
+			href=i.attrs["href"]
+			lst.append(re.findall(r"[s][hz]\d{6}",href)[0])
+		except :
+			continue
+
+def getStockInfo(lst,stockURL,fpath):
+	count=0
+	for stock in lst:
+		url=stockURL+stock+".html"
+		html=getHTMLText(url)
+		try:
+			if html=="":
+				continue
+			infoDict={}
+			soup=BeautifulSoup(html,"html.parser")
+			stockInfo=soup.find("div",attrs={"class":"stock-bets"})
+			
+			name=stockInfo.find_all(attrs={"class":"bets-name"})[0]
+			infoDict.updata({"股票名称":name.text.split()[0]})
+
+			keyList=stockInfo.find_all("dt")
+			valueList=stockInfo.find_all("dd")
+			for i in range(len(keyList)):
+				key=keyList[i].text
+				val=valueList[i].text
+				infoDict[key]=val
+
+			with open(fpath,"a",encoding="utf-8") as f:
+				f.write(str(infoDict)+"\n")
+				count=count+1
+				print('\r当前速度：{:.2f}%',format(count*100/len(lst)),end="")
+		except:
+			count=count+1
+			#动态输出进度条
+			print('\r当前速度：{:.2f}%',format(count*100/len(lst)),end="")
+			continue	
+
+		except Exception as e:
+			raise e
+
+def main():
+	stock_list_url=""   #此url用于获取股票代码
+	stock_info_url=""	#此url用于获取个股的信息
+	output_file=""
+	slist=[]
+	getStockList(slist,stock_list_urlto)
+	getStockInfo(slist,stock_info_url,output_file)
+
+main()
+
+关于动态输出进度条：
+#\r:每次讲控制台的光标移动到首位,去掉则不会呈现刷新的效果,最终是打印一行.
+#end='':print输出不换行,若去掉,则会在控制台每次换行打印当前进度.
+
+
+
+Scrapy爬虫框架介绍：
+	scrapy不是一个函数功能库，而是一个爬虫框架
+爬虫框架：
+	爬虫框架是实现爬虫功能的一个软件结构和功能组件集合
+	爬虫框架是一个半成品，能够帮助用户实现专业网络爬虫
+	
+	
+	
+5+2结构：
+SPIDERS(spiders):爬虫		须用户编写（配置）
+ENGINE(engine):引擎  		已有实现，无需编写
+SCHEDULER(scheduler):调度器	已有实现，无需编写
+DOWNLOADER(downloader):下载  已有实现，无需编写
+ITEM PIPELINES(item pipelines):项目管道  需用户编写（配置）
+
+MIDDLEWARE:中间键模块，存在于engine和downloader之间以及engine和spiders之间
+
+
+
+scrapy爬虫框架包含三条主要的数据流路径
+1.(spiders)---requests--->(enging)------>(scheduler)
+		#requests就相当于url
+
+2.(scheduler)--requests-->(engine)--requests-->(downloader)(<-->inretnet)--requests-->(engine)--requests-->(spiders)
+
+3.(spiders)---items/requests--->(engine)---items--->(item pipelines)
+					|
+					*---requests---->(scheduler)
+		
+故框架的入口是spiders，出口是item pipelines
+
+
+
+scrapy爬虫框架解析：
+1.engine(引擎)： 不需要用户修改
+			    控制所有模块之间的数据流
+			    根据条件触发事件
+2.downloader:     根据请求下载网页，
+			      不需要用户修改
+3.scheduler(调度器):   对所有爬取请求进行调度管理
+			          中规模爬虫有很多的爬取请求，需要进行调度
+			          不需要用户修改
+			
+为了第二条数据流对用户更友好，在engine和downloader之间添加一个键，即Downloader Middleware键
+目的：实施engine,scheduler,downloader之间进行用户可配置的控制
+功能：修改，丢弃，新增请求或响应
+这个中间键是可以编写配置代码的
+
+4.spider:   解析downloader返回的响应（response）
+			产生爬取项(scraped item)
+			产生额外的爬取请求(request)
+	#简单来说，它向整个框架提供了最初始的访问连接，同时对爬取回来的内容进行解析
+	   再次产生新的爬取请求，并从中提取出相关的数据
+	 是整个框架最核心的单元
+	 也是用户需要编写的主要代码
+	 
+5.item pipelines:  以流水线方式处理spider产生的爬取项
+			由一组操作顺序组成，类似流水线，每个操作是一个item pipelines类型
+			可能操作包括：清理，检验和查重爬取项中的HTML数据，将数据存储到数据库
+		#也是用户需要编写的主要代码
+
+Spider Middleware键:
+目的：对请求和爬取项的再处理
+功能：修改，丢弃，新增请求或爬取项
+用户可以编写配置代码
+
+requests库和scarpy库的比较
+相同点：
+1.两者都可以进行页面请求和爬取，python爬虫的两个重要技术路线
+2.两者可用性都好，文档丰富，入门简单
+3.两者都没有处理JS，提交表单，应对验证码等功能（可扩展）
+
+requests					scrapy
+页面级爬虫					网站级爬虫
+功能库						框架
+并发性考虑不足，性能较差		并发性好，性能较高
+重点在于页面下载				重点在于爬虫结构
+定制灵活						一般定制灵活，深度定制困难
+入手十分简单					入门较难
+
+选用哪个技术路线开发爬虫
+1.非常小的需求，requests库
+2.不太小的需求，scrapy框架
+3.定制程度很高的需求（不考虑规模），自搭框架，requests>scrapy
+
+
+
+scrapy爬虫的常用命令
+
+scrapy是为持续运行设计的专业爬虫框架，提供操作的scrapy命令行
+scrapy命令行格式：
+>scrapy<command>[options][args]
+
+常用命令(*为常用命令)：
+1.startproject   创建一个新工程 *		scrapy startproject<name>[dir]
+2.genspider		 创建一个爬虫	*	scrapy genspider[options]<name><domain>
+3.settings		 获取爬虫配置信息		scrapy settings[options]
+4.crawl			 运行一个爬虫	*		scrapy crawl<spider>
+5.list 			 列出工程中所有爬虫 	scrapy list
+6.shell			 启动url调试命令行		scrapy shell [url]
+
+
+scrapy爬虫的命令行逻辑：
+为什么scrapy采用命令行创建和运行爬虫
+1，命令行（不是图形界面）更容易自动化，适合爬虫控制。
+2，本质上，scrapy是给程序员用的，功能（而不是界面）更重要
+
+scrapy第一个实例：
+
+步骤一：建立一个scrapy爬虫框架
+	no_1------------>外层目录
+		scrapy.cfg------>部署scrapy爬虫的配置文件
+		no_1------------>scrapy框架的用户自定义python代码
+			__init__.py-------->初始化脚本
+			items.py----------->Items代码模板（继承类）
+			middlewares.py----->Middlewates代码模板（继承类）
+			pipelines.py------->Pipelines代码模板（继承类）
+			settings.py-------->Scrapy爬虫的配置文件
+			spiders/----------->spiders代码模板目录（继承类）
+				__init__.py-------->初始文件，无需修改
+				__pycache__/------->缓存目录，无需修改
+			
+步骤二：在工程中生成一个scrapy爬虫
+	只需要一个命令，需要输入两个信息：爬虫的名字和要爬取的网站
+	需要两步，第一步是进入工程文件夹，第二步是使用命令创建爬虫
+	>>cd no_1 	#进入工程文件夹，这个命令需要在工程文件夹的父文件下面进行
+	>>scrapy genspider demo python123.io    
+	这个命令只用来生成一个爬虫文件，里面内容如下：
+
+	import scrapy
+
+	class DemoSpider(scrapy.Spider):
+		name = 'demo'
+		allowed_domains = ['python123.io']
+		start_urls = ['http://python123.io/']
+
+		def parse(self, response):
+			pass
+
+	这个类继承于scrapy.Spider类
+	三个参数：name:此爬虫的名字
+			allwed_do,ains:我们给予的域名，此爬虫只爬取此域名以下的相关链接
+			start_urls:以列表形式包含的一个或多个链接，就是爬取的初始页面
+	一个方法：parse方法
+			parse()用于处理响应，解析内容形成字典，发现新的url爬取请求
+			
+步骤三：配置产生的spider爬虫
+	其实就是修改填充爬取代码，例：
+	import scrapy
+
+	class DemoSpider(scrapy.Spider):
+		name = 'demo'
+		#allowed_domains = ['python123']
+		start_urls = ['http://python123.io/ws/demo.html']
+
+		def parse(self, response):
+			fname=response.url.split('/')[-1]
+			with open(fname,'wb') as f:
+				f.write(response.body)
+			self.log('saved file %s.'%name)
+
+步骤四：运行爬虫，获取网页
+	>>scrapy crawl demo
+	捕获文件存储在no_1文件里面
+
+
+yield关键字：
+yield<---->生成器
+*生成器是一个不断产生值的函数
+*包含yield语句的函数是一个生成器
+*生成器每次产生一个值（yield语句），函数被冻结，被唤醒后再产生一个值
+例：
+def gen(n):
+	for i in range(n):
+		yield i**2
+
+for i in gen(5):
+	print(i,"",end="")
+	
+输出:0 1 4 9 16
+
+注意：print中的end=""，作为print()BIF的一个参数，会使该函数关闭“在输出中自动包含换行”的默认行为。
+其原理是：为end传递一个空字符串，这样print函数不会在字符串末尾添加一个换行符，而是添加一个空字符串。
+
+在这个示例中，我们发现再次运行这个函数时是从上一次的运行结果之后接着运行的，而不是重头开始运行，所以我们知道，运行到yield这一行时，我们直接返回了这一行的值，然后冻结了这个函数，并在下一次运行这个函数时解封这个函数。
+
+对于上面这个程序，我们可以使用多种方法输出这个结果，例如迭代，而且看起来更简洁
+但依旧有很多程序使用这种方法，为什么？
+
+为何要有生成器？
+*生成器相比一次列出所有内容的优势：
+	更节省存储空间：如果n=1M,10M,100M或者更大，那么生成器节省了很大的空间
+	响应更迅速
+	使用更灵活
+
+scrapy爬虫的使用：
+步骤一：创建一个工程和spider模板
+步骤二：编写spider
+步骤三：编写Item pipeline
+步骤四：优化配置策略
+
+scrapy爬虫的数据类型：
+Request类：
+	class scrapy.http.Request()
+	*Request对象表示一个HTTP请求
+	*由Spider生成，由Downloader执行
+	包含六个常用的方法：
+		.url:      request对应的请求url地址
+		.method:   对应的请求方法，'GET''POST'等
+		.headers:  字典类型风格的请求头
+		.body:     请求内容主体，字符串类型
+		.meta:     用户添加的扩展信息，在scrapy内部模块间传递信息使用
+		.copy()：  复制该请求
+
+Response类：
+	class scrapy.http.Response()
+	*response对象表示一个HTTP响应
+	*由Downloader生成，由Spider处理
+	属性或方法：
+		.url: response对应的url地址
+		.status:HTTP状态码，默认是200
+		.headers:response对应的头部信息
+		.body:response对应的内容信息，字符串类型
+		.flags:一组标记
+		.request:产生response类型对应的reques对象
+		.copy:复制该响应
+		
+Item类：
+	class scrapy.item.Item()
+	*Item对象表示一个从HTML页面中提取的信息内容
+	*由spider生成，由Item Pipeline处理
+	*Item类似字典类型，可以按照字典类型操作
+
+
+
+scrapy爬虫提取信息的方法：
+scrapy爬虫支持多种HTML信息提取方法
+*Beautiful Soup
+*lxml
+*re
+*XPath Selector
+*CSS Selector
+这些方法并不是全部，我们可以自己扩充方法
+这些方法的作用是为了简化操作
+
+css selector的基本操作：
+<HTML>.css('a::attr(href)').extract()
+其中a代表标签名称，href代表标签属性
+css selector由W3C组织维护并规范
+
+
+
+
+
+
+
+
+
+
+
