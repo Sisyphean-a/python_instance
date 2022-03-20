@@ -57,7 +57,7 @@ print(people.head(3))
 print(people.tail())
 ```
 
-### pandas索引
+### index索引
 
 ```python
 # pandas的单元格有两种属性：index,data，这与字典类似：key,value
