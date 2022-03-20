@@ -25,7 +25,7 @@ lambda:None
 lambda *args:sum(args)
 
 # 和if-else语句联动：如果if为真，则返回if前面的内容，如果为假，返回else后面的内容
-lambda x:x+1 if x<1 else x-1
+lambda x:x+0.1 if x<1 else x-0.1
 # 同样可以使用if not-else语句
 ```
 
@@ -40,8 +40,9 @@ lambda x:x+1 if x<1 else x-1
 - 接受两个参数，第一个为函数，第二个为序列
 - 序列中的每个元素传给函数进行判断，将结果为True的item放到新列表里
 - 基础语法：`filter(function,iterable)`
-	- function--判断函数
-	- iterable--可迭代对象
+  - function--判断函数
+  - iterable--可迭代对象
+- filter返回的是一个迭代器，如果需要把它转化为列表，可以使用list()
 
 filter()的作用是简化循环写法：对列表中的值**依次**执行一次函数运算
 

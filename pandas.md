@@ -4,6 +4,8 @@
 sudo pip3 install pandas
 ```
 
+## 基础
+
 ### 库与数据帧
 
 ```python
@@ -16,7 +18,7 @@ df = pd.DataFrame({"id":[1,2,3] , 			# 第一列数据
 
 # set_index()：设置索引；如果不自己设置索引的话，pandas会在开头一列加个索引
 df = df.set_index("id",
-                  inplace=False)	# 如果inplace=True，索引会还原为列
+                  inplace=False)	# 若为True，则在当前DataFrame上进行操作
 ```
 
 ### excel的导入与导出
@@ -154,5 +156,59 @@ books["c"] = books["a"].apply(lambdy x:x+2)
 # 如果需要对部分序列进行计算，可以使用值计算：
 for i in range[5,16]:
     books["c"].at[i] = books["a"].at[i] *books["b"].at[i]
+```
+
+### 网络数据与排序
+
+```python
+# 获取网络数据，输出是列表
+url = "https://info.usd-cny.com/wti/lishi.htm"
+html_data = pd.read_html(url,index_col="年份")
+
+# 转换为DataFrame数据
+df = pd.DataFrame(html_data[0])
+
+# 清除数据中的特殊符号并转换为浮点型数字
+del_head = lambda x : float(x[1:])
+del_tail = lambda x : float(x[:-1])
+
+df["最低价"] = df["最低价"].apply(del_head)
+df["平均价"] = df["平均价"].apply(del_head)
+df["最高价"] = df["最高价"].apply(del_head)
+df["年幅度"] = df["年幅度"].apply(del_tail)
+
+# 排序函数：sort_values()
+df.sort_values(by="最低价",		# 选择排序序列
+               ascending=False,    # 升序，默认为True，如果为False为倒序
+               inplace=True)	   # 直接在原数据上进行改动	
+# 多重排序
+df.sort_values(by=["最低价"，"年幅度"], # 排序多重条件，依次进行
+               ascending=[False,True],# 升降序多重条件
+               inplace=True)
+```
+
+### 筛选
+
+```python
+# 设置筛选条件,年幅度大于0,以及平均价大于等于30小于80
+location_amptitude = lambda x : x>0
+location_mean_value = lambda x : 80>x>=50
+
+# 筛选函数：loc[]
+df = df.loc[df["年幅度"].apply(location_amptitude)]
+
+# 多重筛选，这里一行写不完，使用了" \"进行换行
+df = df.loc[df.年幅度.apply(location_amptitude)] \
+	   .loc[df.平均价.apply(location_mean_value)]
+```
+
+## 绘图
+
+### 柱状图
+
+```python
+# 导入做图库
+import matplotlib.pyplot as plt
+
 ```
 
