@@ -204,11 +204,61 @@ df = df.loc[df.年幅度.apply(location_amptitude)] \
 
 ## 绘图
 
+### DataFrame.plot()函数
+
+```python
+DataFrame.plot(x=None,		# 设置x轴，如果不设置，则默认使用索引为x轴
+               y=None,		# 设置y轴
+               kind="line",	# 设置图形
+               ax=None		# 子图
+               subplots=False	# 判断图片中是否有子图
+               sharex=None	# 如果有子图，子图共x轴刻度，标签
+               sharey=False	# 如果有子图，子图共y轴刻度，标签
+               layout=None	# 子图的行列布局
+               figsize=None	# 图片尺寸大小
+               fontsize=None# 设置轴刻度的字体大小
+               title=None	# 图片的标题
+               rot=None		# 设置轴刻度字体的倾斜角度
+               grid=None	# 图片是否有网格
+               colormap=None# 设置图的区域颜色
+               color=None	# 设置柱状图的颜色
+               xlim=None	# 设置坐标轴的范围，列表或元组形式
+               ylim=None	# 同上
+               xticks=None	# 设置坐标轴轴刻度值，序列形势（例如列表）
+               yticks=None	# 同上
+              )
+kind:str
+"line"：折线图
+"bar"：条形图
+"barh"：横向条形图
+"hist"：柱状图
+"box"：箱线图
+"pie"：饼图
+"scatter"：散点图，需要传入columns方向的索引，即：两个Y
+"Kernel"：Kernel的密度估计图
+```
+
 ### 柱状图
 
 ```python
 # 导入做图库
 import matplotlib.pyplot as plt
 
+# 做图前进行数据排序
+df.sort_values(by="平均价",inplace=True,ascending=False)
+
+# 使用pandas的做图库plot()进行做图
+df.plot.bar(x="年份",y="平均价",color="blue")
+
+# 使用plt库的bar()做图
+plt.bar(df."年份",df."平均价",color="orange")
+plt.xlabel("年份");plt.ylabel("平均价")
+plt.title("US")
+plt.xticks(df."年份",rotation="30") # 改变x轴标签的角度
+
+# pandas做好的图并不会显示，需要使用plt库输出
+plt.tight_layout()	# 输出紧凑型图
+plt.show()
+ 
 ```
 
