@@ -1,6 +1,8 @@
 import pandas as pd 
 import matplotlib.pyplot as plt
 
+#plt.rcParams['font.sans-serif'] = ['Microsoft YaHei'] 
+
 url = "https://info.usd-cny.com/wti/lishi.htm"
 
 table = pd.read_html(url)
@@ -19,5 +21,16 @@ print(df.head())
 df.plot(y="平均价",
     kind="bar",
     #color="red",
+    title="US油价",
     rot=30)
 plt.show()
+'''
+AR PL UKai CN
+AR PL Mingti2L Big5
+Unifont
+Noto Sans CJK JP
+AR PL KaitiM Big5
+Noto Serif CJK JP
+Droid Sans Fallback
+AR PL UMing CN
+'''
