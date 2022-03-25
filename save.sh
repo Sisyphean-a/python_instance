@@ -2,5 +2,5 @@
 echo "请输入你的commit："
 read be
 git add --all
-git commit -m "wu"
+git commit -m "$be"
 git push
